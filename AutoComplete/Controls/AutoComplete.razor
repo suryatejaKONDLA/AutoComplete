@@ -1,0 +1,21 @@
+﻿@typeparam TItem
+@inject IJSRuntime JsRuntime
+
+<div class="autocomplete">
+    <input @bind="SearchText" @oninput="OnInput" @onkeydown="OnKeyDown" @onfocus="OpenDropdown" class="autocomplete-input" @ref="InputElement" />
+    @{
+        if (IsDropdownOpen && FilteredItems.Any())
+        {
+            <ul class="autocomplete-list">
+                @{
+                    foreach (var item in FilteredItems)
+                    {
+                        <li @onclick="() => SelectItem(item)" class="autocomplete-item">@DisplayProperty(item)</li>
+                    }
+
+                }
+            </ul>
+        }
+
+    }
+</div>

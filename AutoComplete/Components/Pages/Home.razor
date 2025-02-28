@@ -1,0 +1,46 @@
+﻿@page "/"
+@using AutoComplete.Controls
+@using AutoComplete.Services
+@inject GroupService DataGroupService
+
+<PageTitle>Home</PageTitle>
+
+<div class="container">
+    <div class="row">
+        <h3>Autocomplete with Service</h3>
+        <div class="col-md-6">
+            <AutoComplete DisplayProperty="@(item => item.GroupName)"
+                          Items="@Items"
+                          Model="@SelectedItem"
+                          ModelChanged="@OnItemSelected"
+                          TItem="Group">
+            </AutoComplete>
+        </div>
+        <div class="col-md-6">
+            @{
+                if (SelectedItem != null)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Selected Group Details</h5>
+                            <ul class="list-group list-group-flush">
+                                @{
+                                    foreach (var property in typeof(Group).GetProperties())
+                                    {
+                                        <li class="list-group-item">
+                                            <strong>@property.Name:</strong> @property.GetValue(SelectedItem)
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p>No Item Selected</p>
+                }
+            }
+        </div>
+    </div>
+</div>
