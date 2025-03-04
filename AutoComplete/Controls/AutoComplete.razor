@@ -4,18 +4,29 @@
 <div class="autocomplete">
     <input @bind="SearchText" @oninput="OnInput" @onkeydown="OnKeyDown" @onfocus="OpenDropdown" class="autocomplete-input" @ref="InputElement" />
     @{
-        if (IsDropdownOpen && FilteredItems.Any())
+        if (IsDropdownOpen && FilteredItems.Count > 0)
         {
             <ul class="autocomplete-list">
                 @{
-                    foreach (var item in FilteredItems)
+                    if (FilteredItems.Count > 10)
                     {
-                        <li @onclick="() => SelectItem(item)" class="autocomplete-item">@DisplayProperty(item)</li>
+                        <Virtualize ItemsProvider="LoadItems" Context="item" ItemSize="30">
+                            <li @onclick="() => SelectItem(item)" class="autocomplete-item">
+                                @(DisplayProperty(item))
+                            </li>
+                        </Virtualize>
                     }
-
+                    else
+                    {
+                        foreach (var item in FilteredItems)
+                        {
+                            <li @onclick="() => SelectItem(item)" class="autocomplete-item">
+                                @(DisplayProperty(item))
+                            </li>
+                        }
+                    }
                 }
             </ul>
         }
-
     }
 </div>

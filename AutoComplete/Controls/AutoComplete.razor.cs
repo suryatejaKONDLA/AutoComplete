@@ -1,4 +1,6 @@
-﻿namespace AutoComplete.Controls
+﻿using Microsoft.AspNetCore.Components.Web.Virtualization;
+
+namespace AutoComplete.Controls
 {
     public partial class AutoComplete<TItem> : ComponentBase
     {
@@ -9,27 +11,42 @@
         public EventCallback<TItem> ModelChanged { get; set; }
 
         [Parameter]
-        public List<TItem> Items { get; set; }
+        public List<TItem> Items { get; set; } = [];
 
         [Parameter]
         public Func<TItem, string> DisplayProperty { get; set; }
 
-        private string SearchText { get; set; }
+        private string SearchText { get; set; } = string.Empty;
         private List<TItem> FilteredItems { get; set; } = [];
         private bool IsDropdownOpen { get; set; } = false;
-
         private ElementReference InputElement;
 
         protected override void OnParametersSet()
         {
-            FilteredItems = Items;
+            FilterItems();
         }
 
         private void OnInput(ChangeEventArgs e)
         {
-            SearchText = e.Value?.ToString();
-            FilteredItems = Items.Where(item => DisplayProperty(item).Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList();
-            IsDropdownOpen = true; // Open dropdown when typing
+            SearchText = e.Value?.ToString() ?? string.Empty;
+            FilterItems();
+            IsDropdownOpen = true;
+        }
+
+        private void FilterItems()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                FilteredItems = Items;
+            }
+            else
+            {
+                FilteredItems = Items
+                    .Where(item => DisplayProperty(item).Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            StateHasChanged();
         }
 
         private void OnKeyDown(KeyboardEventArgs e)
@@ -65,6 +82,12 @@
         {
             IsDropdownOpen = false;
             StateHasChanged();
+        }
+
+        private ValueTask<ItemsProviderResult<TItem>> LoadItems(ItemsProviderRequest request)
+        {
+            var items = FilteredItems.Skip(request.StartIndex).Take(request.Count).ToList();
+            return ValueTask.FromResult<ItemsProviderResult<TItem>>(new(items, FilteredItems.Count));
         }
     }
 }
