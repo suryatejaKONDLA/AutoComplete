@@ -9,12 +9,12 @@
     <div class="row">
         <h3>Autocomplete</h3>
         <div class="col-md-6">
-            <AutoComplete DisplayProperty="@(item => item.GroupName)"
-                          Items="@Items"
-                          Model="@SelectedItem"
-                          ModelChanged="@OnItemSelected"
-                          TItem="Group">
-            </AutoComplete>
+            <Dropdown TItem="Group"
+                      Items="@Items"
+                      DisplayProperty="@(item => item.GroupName)"
+                      SelectedItem="@SelectedItem"
+                      SelectedItemChanged="OnItemSelected">
+            </Dropdown>
         </div>
         <div class="col-md-6">
             @{
