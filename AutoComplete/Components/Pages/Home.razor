@@ -1,14 +1,15 @@
-﻿@page "/"
+@page "/"
 @using AutoComplete.Controls
 @using AutoComplete.Services
+@using Microsoft.AspNetCore.Components.QuickGrid
 @inject GroupService DataGroupService
 
 <PageTitle>Group</PageTitle>
 
 <div class="container">
     <div class="row">
-        <h3>Autocomplete</h3>
-        <div class="col-md-6">
+        <h3>Group</h3>
+        <div class="col-md-12">
             <Dropdown TItem="Group"
                       Items="@Items"
                       DisplayProperty="@(item => item.GroupName)"
@@ -16,30 +17,20 @@
                       SelectedItemChanged="OnItemSelected">
             </Dropdown>
         </div>
-        <div class="col-md-6">
-            @{
-                if (SelectedItem != null)
-                {
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Selected Group Details</h5>
-                            <ul class="list-group list-group-flush">
-                                @{
-                                    foreach (var property in typeof(Group).GetProperties())
-                                    {
-                                        <li class="list-group-item">
-                                            <strong>@property.Name:</strong> @property.GetValue(SelectedItem)
-                                        </li>
-                                    }
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <p>No Item Selected</p>
-                }
+        <div class="col-md-12 mt-3">
+            @if (SelectedItem != null)
+            {
+                <QuickGrid TItem="Group" Items="@(new List<Group> { SelectedItem }.AsQueryable())" Class="table table-striped table-hover">
+                    <PropertyColumn Property="@(item => item.GroupName)" Title="Group Name" />
+                    <PropertyColumn Property="@(item => item.DbaOrTradeName)" Title="Dba Or TradeName" />
+                    <PropertyColumn Property="@(item => item.GroupNo)" Title="Group No" />
+                    <PropertyColumn Property="@(item => item.LineOfBusiness)" Title="Line Of Business" />
+                    <PropertyColumn Property="@(item => item.ModifiedBy)" Title="Modified By" />
+                </QuickGrid>
+            }
+            else
+            {
+                <p>No Item Selected</p>
             }
         </div>
     </div>
