@@ -16,7 +16,7 @@ public class GroupService
         if (File.Exists(FilePath))
         {
             var jsonData = File.ReadAllText(FilePath);
-            Groups = JsonSerializer.Deserialize<List<Group>>(jsonData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? [];
+            Groups = System.Text.Json.JsonSerializer.Deserialize<List<Group>>(jsonData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? [];
         }
     }
 

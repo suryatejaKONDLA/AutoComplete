@@ -1,7 +1,4 @@
 @page "/"
-@using AutoComplete.Controls
-@using AutoComplete.Services
-@using Microsoft.AspNetCore.Components.QuickGrid
 @inject GroupService DataGroupService
 
 <PageTitle>Group</PageTitle>
@@ -18,19 +15,24 @@
             </Dropdown>
         </div>
         <div class="col-md-12 mt-3">
-            @if (SelectedItem != null)
-            {
-                <QuickGrid TItem="Group" Items="@(new List<Group> { SelectedItem }.AsQueryable())" Class="table table-striped table-hover">
-                    <PropertyColumn Property="@(item => item.GroupName)" Title="Group Name" />
-                    <PropertyColumn Property="@(item => item.DbaOrTradeName)" Title="Dba Or TradeName" />
-                    <PropertyColumn Property="@(item => item.GroupNo)" Title="Group No" />
-                    <PropertyColumn Property="@(item => item.LineOfBusiness)" Title="Line Of Business" />
-                    <PropertyColumn Property="@(item => item.ModifiedBy)" Title="Modified By" />
-                </QuickGrid>
-            }
-            else
-            {
-                <p>No Item Selected</p>
+            @{
+                if (SelectedItem != null)
+                {
+                    <QuickGrid TGridItem="Group" Items="@(new List<Group> { SelectedItem }.AsQueryable())" Class="table table-striped table-hover">
+                        @{
+                            foreach (var prop in typeof(Group).GetProperties())
+                            {
+                                var displayName = prop.GetCustomAttribute<DisplayAttribute>()?.Name ?? prop.Name;
+                                <PropertyColumn Property="@(item => prop.GetValue(item))" Title="@(displayName)" />
+                            }
+
+                        }
+                    </QuickGrid>
+                }
+                else
+                {
+                    <p>No Item Selected</p>
+                }
             }
         </div>
     </div>

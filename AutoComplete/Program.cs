@@ -52,5 +52,5 @@ static string GenerateJsonData(int count)
         });
     }
 
-    return JsonSerializer.Serialize(records, new JsonSerializerOptions { WriteIndented = true });
+    return System.Text.Json.JsonSerializer.Serialize(records, new JsonSerializerOptions { WriteIndented = true });
 }
