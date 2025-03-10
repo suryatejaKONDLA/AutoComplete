@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         <h3>Group</h3>
-        <div class="col-md-12">
+        <div class="col-md-6">
             <Dropdown TItem="Group"
                       Items="@Items"
                       DisplayProperty="@(item => item.GroupName)"
@@ -14,6 +14,19 @@
                       SelectedItemChanged="OnItemSelected">
             </Dropdown>
         </div>
+        <div class="col-md-6">
+            <DatePicker @bind-SelectedDate="SelectedDate" DateFormat="Y-m-d" OnDateChanged="HandleDateChange" />
+
+            @{
+                if (SelectedDate.HasValue)
+                {
+                    <p>Selected Date: @SelectedDate.Value.ToString("yyyy-MM-dd")</p>
+                }
+
+            }
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12 mt-3">
             @{
                 if (SelectedItem != null)

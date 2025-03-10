@@ -1,0 +1,39 @@
+﻿/* Custom Flatpickr Styling */
+.flatpickr-calendar {
+    border: 2px solid #71984a !important; /* Green Border */
+}
+
+.flatpickr-months {
+    background: #71984a !important; /* Green Header */
+    color: white !important;
+}
+
+.flatpickr-calendar.arrowTop:after {
+    display: none;
+}
+
+.flatpickr-calendar.arrowTop:before {
+    display: none;
+}
+
+.flatpickr-day {
+    color: #003767 !important; /* Dark Blue Text */
+    border-radius: 5px;
+}
+
+    .flatpickr-day:hover {
+        background: #003767 !important; /* Dark Blue Hover */
+        color: white !important;
+    }
+
+    .flatpickr-day.today {
+        background: #71984a !important; /* Green Today */
+        color: white !important;
+        border: 2px solid #003767 !important;
+    }
+
+    .flatpickr-day.selected {
+        background: #003767 !important; /* Blue Selected Date */
+        color: white !important;
+        border: 2px solid #71984a !important;
+    }

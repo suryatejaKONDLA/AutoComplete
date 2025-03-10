@@ -9,4 +9,12 @@ public partial class Home
     private void OnItemSelected(Group item) { SelectedItem = item; }
 
     protected override void OnInitialized() { Items = DataGroupService.GetDataGroupLocal().ToList(); }
+
+    private DateTime? SelectedDate;
+
+    private void HandleDateChange(DateTime? date)
+    {
+        SelectedDate = date;
+        Console.WriteLine($"Date Selected: {SelectedDate}");
+    }
 }
