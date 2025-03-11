@@ -1,13 +1,13 @@
 ﻿@typeparam TItem
 
 <div class="select-dropdown">
-    <select @onchange="OnSelectionChanged" class="select-input form-control">
-        <option value="" selected>-- Select an option --</option>
+    <InputSelect @bind-Value="SelectedItemAsString" class="select-input form-control">
+        <option value="">-- Select an option --</option>
         @foreach (var item in Items)
         {
             <option value="@DisplayProperty(item)">
                 @(DisplayProperty(item))
             </option>
         }
-    </select>
+    </InputSelect>
 </div>
