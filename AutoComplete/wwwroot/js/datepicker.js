@@ -1,10 +1,13 @@
 ﻿window.flatpickrInterop = {
-    initialize: (elementId, dateFormat) => {
-        flatpickr(`#${elementId}`, {
-            allowInput: false,
+    initialize: function (elementId, dateFormat, dotNetHelper) {
+        var flatpickrInstance = flatpickr(document.getElementById(elementId), {
             dateFormat: dateFormat,
-            onChange: function (selectedDates, dateStr, instance) {
-                document.getElementById(elementId).value = dateStr;
+            onChange: function (selectedDates) {
+                if (selectedDates.length > 0) {
+                    dotNetHelper.invokeMethodAsync('OnFlatpickrDateChanged', selectedDates[0]);
+                } else {
+                    dotNetHelper.invokeMethodAsync('OnFlatpickrDateChanged', null);
+                }
             }
         });
     }

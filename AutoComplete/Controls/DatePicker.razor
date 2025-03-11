@@ -1,3 +1,4 @@
-﻿@inject IJSRuntime JSRuntime
+﻿@inject IJSRuntime JsRuntime
+@implements IDisposable
 
-<input @bind="SelectedDate" @bind:event="SelectedDateChanged" id="@ElementId" class="@CssClass" readonly />
+<input id="@ElementId" class="@CssClass" readonly />

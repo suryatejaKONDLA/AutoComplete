@@ -1,0 +1,58 @@
+﻿@page "/"
+
+<PageTitle>Action Item</PageTitle>
+
+<div class="container">
+    <h3>Action Item Form</h3>
+    <div class="mb-3">
+        <label>Action Item</label>
+        <Dropdown TItem="string"
+                  Items="@AvailableItems"
+                  DisplayProperty="s => s"
+                  SelectedItem="@SelectedActionItem"
+                  SelectedItemChanged="OnItemSelected">
+        </Dropdown>
+    </div>
+    @{
+        if (!string.IsNullOrEmpty(SelectedActionItem))
+        {
+            <div class="border p-3">
+                <div class="mb-3">
+                    <label>Effective Date</label>
+                    <DatePicker @bind-SelectedDate="NewItem.EffectiveDate"
+                                DateFormat="Y-m-d"
+                                OnDateChanged="@HandleDateChange">
+                    </DatePicker>
+                </div>
+                <div class="mb-3">
+                    <label>Is Selected</label>
+                    <input type="checkbox" class="form-check-input" @bind="NewItem.IsSelected" />
+                </div>
+                <div class="mb-3">
+                    <label>Comments</label>
+                    <input type="text" class="form-control" @bind="NewItem.Comments" />
+                </div>
+
+                <button class="btn btn-primary" @onclick="AddItem">Add</button>
+            </div>
+        }
+    }
+    @{
+        if (AddedItems.Any())
+        {
+            <h4 class="mt-4">Added Items</h4>
+            <QuickGrid TGridItem="ActionItemModel" Items="@(AddedItems.AsQueryable())" Class="table table-striped">
+                @{
+                    foreach (var prop in typeof(ActionItemModel).GetProperties())
+                    {
+                        var displayName = prop.GetCustomAttribute<DisplayAttribute>()?.Name ?? prop.Name;
+                        <PropertyColumn Property="@(item => prop.GetValue(item))" Title="@(displayName)" />
+                    }
+                }
+                <TemplateColumn Title="Actions">
+                    <button class="btn btn-danger btn-sm" @onclick="() => RemoveItem(context)">Remove</button>
+                </TemplateColumn>
+            </QuickGrid>
+        }
+    }
+</div>

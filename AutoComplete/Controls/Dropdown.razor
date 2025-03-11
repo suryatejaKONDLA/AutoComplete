@@ -2,7 +2,7 @@
 
 <div class="select-dropdown">
     <select @onchange="OnSelectionChanged" class="select-input form-control">
-        <option value="">-- Select an option --</option>
+        <option value="" selected>-- Select an option --</option>
         @foreach (var item in Items)
         {
             <option value="@DisplayProperty(item)">
