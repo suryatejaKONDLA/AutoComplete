@@ -8,7 +8,12 @@ public partial class Home
 
     private void OnItemSelected(Group item) { SelectedItem = item; }
 
-    protected override void OnInitialized() { Items = DataGroupService.GetDataGroupLocal().ToList(); }
+    protected override void OnInitialized()
+    {
+        Items = DataGroupService.GetDataGroupLocal().ToList();
+        SelectedDate = DateTime.Now;
+    }
+
 
     private DateTime? SelectedDate;
 

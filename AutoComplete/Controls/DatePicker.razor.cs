@@ -16,14 +16,26 @@ public partial class DatePicker : ComponentBase
 
     [Parameter] public EventCallback<DateTime?> SelectedDateChanged { get; set; }
 
+    private bool Initialized = false;
+    private DateTime? LastSelectedDate;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             DotNetHelper = DotNetObjectReference.Create(this);
             await JsRuntime.InvokeVoidAsync("flatpickrInterop.initialize", ElementId, DateFormat, DotNetHelper);
+            Initialized = true;
+        }
+
+        // Sync date from C# to JS only after initialization
+        if (Initialized && SelectedDate != LastSelectedDate)
+        {
+            await JsRuntime.InvokeVoidAsync("flatpickrInterop.setDate", ElementId, SelectedDate);
+            LastSelectedDate = SelectedDate;
         }
     }
+
 
     [JSInvokable]
     public async Task OnFlatpickrDateChanged(DateTime? date)
